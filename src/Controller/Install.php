@@ -131,7 +131,7 @@ class Install extends Common
             $validator = new Validator();
             $validator
                 ->add('hostname', _i('Database Hostname'), [new Trim(), new Assert\NotBlank()])
-                ->add('prefix', _i('Table Prefix'), [new Trim()])
+                ->add('prefix', _i('Table Prefix'), [new Trim(), new Assert\NotBlank()])
                 ->add('username', _i('Username'), [new Trim(), new Assert\NotBlank()])
                 ->add('database', _i('Database name'), [new Trim(), new Assert\NotBlank()]);
 
