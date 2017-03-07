@@ -66,6 +66,69 @@ class Preferences extends Admin
             'help' => _i('Set the cache system you want to use. Selected cache server needs to be running before you save.'),
             'options' => $this->config->get('foolz/foolframe', 'package', 'preferences.cache_type.available'),
             'preferences' => true,
+            'validation_func' => function($input, $form) {
+                switch ($input['foolframe.cache.system']) {
+                    case 'memcached':
+                        if ($input['foolframe.cache.servers'] !== '') {
+                            foreach (explode(',', $input['foolframe.cache.servers']) as $server) {
+                                $server = explode(':', $server);
+                                try {
+                                    fsockopen($server[0], $server[1], $e, $ee, 10);
+                                } catch (\Exception $e) {
+                                    return [
+                                        'error_code' => 'NO_MEMCACHED_CONNECTION',
+                                        'error' => sprintf(_i('Could not connect to Memcached server running in address %s:%s.'), $server[0], $server[1])
+                                    ];
+                                }
+                            }
+                        } else {
+                            try {
+                                fsockopen('127.0.0.1', 11211, $e, $ee, 10);
+                            } catch (\Exception $e) {
+                                return [
+                                    'error_code' => 'NO_LOCAL_REDIS_CONNECTION',
+                                    'error' => _i('Could not connect to local Memcached server.')
+                                ];
+                            }
+                        }
+                        break;
+                    case 'redis':
+                        if ($input['foolframe.cache.servers'] !== '') {
+                            foreach (explode(',', $input['foolframe.cache.servers']) as $server) {
+                                $server = explode(':', $server);
+                                try {
+                                    fsockopen($server[0], $server[1], $e, $ee, 10);
+                                } catch (\Exception $e) {
+                                    return [
+                                        'error_code' => 'NO_REDIS_CONNECTION',
+                                        'error' => sprintf(_i('Could not connect to Redis server running in address %s:%s.'), $server[0], $server[1])
+                                    ];
+                                }
+                            }
+                        } else {
+                            try {
+                                fsockopen('127.0.0.1', 6379, $e, $ee, 10);
+                            } catch (\Exception $e) {
+                                return [
+                                    'error_code' => 'NO_LOCAL_REDIS_CONNECTION',
+                                    'error' => _i('Could not connect to local Redis server.')
+                                ];
+                            }
+                        }
+                        break;
+                    case 'apc':
+                        if (!extension_loaded('apc')) {
+                            return [
+                                'error_code' => 'NO_APC',
+                                'error' => _i('This system does not have APC extension installed.')
+                            ];
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                return ['success' => true];
+            }
         );
 
         $form['foolframe.cache.format'] = array(
@@ -75,7 +138,7 @@ class Preferences extends Admin
             'options' => $this->config->get('foolz/foolframe', 'package', 'preferences.cache_format.available'),
             'preferences' => true,
             'validation_func' => function() {
-                /* I would like to flush() here */
+                // flush how?
             }
         );
 
@@ -85,7 +148,34 @@ class Preferences extends Admin
             'preferences' => true,
             'help' => _i('Set address of your cache server(s). Leave blank for localhost. Syntax: ').
             '<pre style="margin-top:8px">address:port:weight,address:port:weight</pre>',
-            'class' => 'span3'
+            'class' => 'span3',
+            'validation_func' => function($input, $form) {
+                if ($input['foolframe.cache.servers'] !== '') {
+                    if (count(explode(':', $input['foolframe.cache.servers'])) < 3) {
+                        return [
+                            'error_code' => 'CACHE_CONFIG_SYNTAX_FAILURE',
+                            'error' => _i('Cache Servers syntax appears invalid.')
+                        ];
+                    }
+                    foreach (explode(',', $input['foolframe.cache.servers']) as $server) {
+                        if (!filter_var(explode(':', $server)[0], FILTER_VALIDATE_IP) &&
+                            !filter_var(gethostbyname(explode(':', $server)[0]), FILTER_VALIDATE_IP)
+                        ) {
+                            return [
+                                'error_code' => 'CACHE_CONFIG_SYNTAX_FAILURE',
+                                'error' => _i('Cache Servers syntax appears invalid. Check server address.')
+                            ];
+                        }
+                        if (!ctype_digit(explode(':', $server)[1]) || !ctype_digit(explode(':', $server)[2])) {
+                            return [
+                                'error_code' => 'CACHE_CONFIG_SYNTAX_FAILURE',
+                                'error' => _i('Cache Servers syntax appears invalid. Check server port and weight.')
+                            ];
+                        }
+                    }
+                }
+                return ['success' => true];
+            }
         );
 
         $form['separator-3'] = array(
