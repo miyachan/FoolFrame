@@ -176,7 +176,8 @@ class Install extends Common
         $check_users = $users->getAll();
 
         if ($check_users['count'] > 0) {
-            return new RedirectResponse($this->uri->create('install/modules'));
+            $this->install->install_modules();
+            return new RedirectResponse($this->uri->create('install/complete'));
         }
 
         if ($this->getPost()) {
