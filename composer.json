@@ -1,10 +1,10 @@
 {
-    "name": "foolz/foolframe",
+    "name": "pleebe/foolframe",
     "description": "Administration panel and some utilities",
     "authors": [
         {
-            "name": "Foolz",
-            "email": "support@foolz.us"
+            "name": "pleebe",
+            "email": "pleebe@4plebs.org"
         }
     ],
     "require": {
