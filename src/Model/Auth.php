@@ -156,7 +156,7 @@ class Auth extends Model
             throw new WrongUsernameOrPasswordException();
         }
 
-        if (!$user['activated'] && !$this->preferences->get('foolframe.auth.disable_registration_email')) {
+        if (!$user['activated'] && !$this->preferences->get('foolframe.auth.disable_registration_email', false)) {
             throw new AccountNotVerifiedException();
         }
 
@@ -347,7 +347,7 @@ class Auth extends Model
             }
         }
 
-        $activated = (bool) $this->preferences->get('foolframe.auth.disable_registration_email');
+        $activated = (bool) $this->preferences->get('foolframe.auth.disable_registration_email', false);
         $activation_key = null;
         $activation_key_hashed = null;
 

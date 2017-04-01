@@ -30,8 +30,11 @@ class Users extends Model
     /**
      * Gets single user database row by selected row
      *
+     * @param string $field
      * @param  int  $id
      * @return object
+     *
+     * @throws  UsersWrongIdException  In case no user was found
      */
     public function getUserBy($field, $id)
     {
@@ -53,7 +56,7 @@ class Users extends Model
      * Gets all user limited with page and limit
      *
      * @param  int  $page
-     * @param  into $limit
+     * @param  int $limit
      * @return object
      */
     public function getAll($page = 1, $limit = 40)

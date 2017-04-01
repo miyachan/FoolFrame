@@ -53,7 +53,7 @@ class SchemaManager
         $tables = $sm->listTables();
 
         // get rid of the tables that don't have the same prefix
-        if ($prefix !== null) {
+        if ($prefix !== '') {
             foreach ($tables as $key => $table) {
                 if (strpos($table->getName(), $new->prefix) !== 0) {
                     unset($tables[$key]);

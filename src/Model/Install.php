@@ -106,4 +106,26 @@ class Install extends Model
         $this->config->set('foolz/foolframe', 'config', 'install.installed', true);
         $this->config->save('foolz/foolframe', 'config');
     }
+
+    public function skip_install()
+    {
+        $this->config->addPackage('unknown', ASSETSPATH);
+        $class_name = $this->config->get('unknown', 'package', 'main.class_name');
+        $name_lowercase = strtolower($class_name);
+
+        $modules = [
+            'foolframe' => [
+                'context' => '\\Foolz\\FoolFrame\\Model\\Context',
+                'namespace' => 'foolz/foolframe'
+            ],
+            $name_lowercase => [
+                'context' => $this->config->get('unknown', 'package', 'main.class_context'),
+                'namespace' => 'foolz/'.$name_lowercase
+            ]
+        ];
+
+        $this->config->set('foolz/foolframe', 'config', 'modules.installed', $modules);
+        $this->config->set('foolz/foolframe', 'config', 'install.installed', true);
+        $this->config->save('foolz/foolframe', 'config');
+    }
 }

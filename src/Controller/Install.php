@@ -145,11 +145,6 @@ class Install extends Common
                 if ($this->install->check_database($input)) {
                     $this->install->setup_database($input);
 
-                    $dc = new DoctrineConnection($this->getContext(), $this->config);
-
-                    $sm = SchemaManager::forge($dc->getConnection(), $dc->getPrefix());
-                    Schema::load($this->getContext(), $sm);
-                    $sm->commit();
                     $this->install->create_salts();
 
                     return new RedirectResponse($this->uri->create('install/create_admin'));
@@ -173,12 +168,15 @@ class Install extends Common
         // if an admin account exists, lock down this step and redirect to the next step instead
         /** @var Users $users */
         $users = $this->getContext()->getService('users');
-        $check_users = $users->getAll();
+        try {
+            // might not work if db config hasn't settled yet
+            $check_users = $users->getAll();
 
-        if ($check_users['count'] > 0) {
-            $this->install->install_modules();
-            return new RedirectResponse($this->uri->create('install/complete'));
-        }
+            if ($check_users['count'] > 0) {
+                $this->install->skip_install();
+                return new RedirectResponse($this->uri->create('install/complete'));
+            }
+        } catch (\Doctrine\DBAL\DBALException $e) {}
 
         if ($this->getPost()) {
             $validator = new Validator();
@@ -192,6 +190,12 @@ class Install extends Common
 
             if (!$validator->getViolations()->count()) {
                 $input = $validator->getFinalValues();
+
+                $dc = new DoctrineConnection($this->getContext(), $this->config);
+
+                $sm = SchemaManager::forge($dc->getConnection(), $dc->getPrefix());
+                Schema::load($this->getContext(), $sm);
+                $sm->commit();
 
                 $auth = new Auth($this->getContext());
 
