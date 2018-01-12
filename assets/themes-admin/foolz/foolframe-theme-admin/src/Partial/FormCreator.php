@@ -385,7 +385,7 @@ public function toString()
                             // if help is not set, put the label in help-inline
                             if (isset($helpers['help'])) : ?><label><?php echo $helpers['label'] ?></label><?php endif; ?>
                         <?php
-                        echo $form_helper->$helper['type']($item);
+                        echo $form_helper->{$helper['type']}($item);
                         ?>
                         <span class="help-inline">
                             <?php
