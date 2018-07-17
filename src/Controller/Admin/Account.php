@@ -11,7 +11,6 @@ use Foolz\FoolFrame\Model\Validation\Constraint\EqualsField;
 use Foolz\FoolFrame\Model\Validation\Validator;
 use Foolz\Inet\Inet;
 use forxer\Gravatar\Gravatar;
-use Neutron\ReCaptcha\ReCaptcha;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -110,22 +109,20 @@ class Account extends \Foolz\FoolFrame\Controller\Admin
             $input = $this->getPost();
 
             $recaptcha = true;
-            if ($this->preferences->get('foolframe.auth.recaptcha_public', false)) {
-
-                $recaptcha_obj = ReCaptcha::create($this->preferences->get('foolframe.auth.recaptcha_public'), $this->preferences->get('foolframe.auth.recaptcha_private'));
-                $recaptcha_result = $recaptcha_obj->checkAnswer(
-                    $this->getRequest()->getClientIp(),
-                    $this->getPost('recaptcha_challenge_field'),
-                    $this->getPost('recaptcha_response_field')
+            if ($this->preferences->get('foolframe.auth.recaptcha2_sitekey', false)) {
+                $recaptcha = new \ReCaptcha\ReCaptcha($this->preferences->get('foolframe.auth.recaptcha2_secret'));
+                $recaptcha_result = $recaptcha->verify(
+                    $this->getPost('g-recaptcha-response'),
+                    $this->getRequest()->getClientIp()
                 );
 
-                if (!$recaptcha_result->isValid()) {
+                if (!$recaptcha_result->isSuccess()) {
                     $recaptcha = false;
                 }
             }
 
             if (!$recaptcha) {
-                $this->notices->set('error', _i('The reCAPTCHA code entered does not match the one displayed.'));
+                $this->notices->set('error', _i('The reCAPTCHA not solved successfully.'));
             } else {
                 $validator = new Validator();
                 $validator

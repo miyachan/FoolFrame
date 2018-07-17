@@ -42,21 +42,17 @@ class Register extends \Foolz\FoolFrame\View\View
         'required' => true
     ]) ?>
 
-        <?php if ($this->getPreferences()->get('foolframe.auth.recaptcha_public', false)) : ?>
-
-        <script type="text/javascript"
-                src="//www.google.com/recaptcha/api/challenge?k=<?= $this->getPreferences()->get('foolframe.auth.recaptcha_public') ?>">
+        <?php if ($this->getPreferences()->get('foolframe.auth.recaptcha2_sitekey', false)) : ?>
+        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+        <script type="text/javascript">
+            var onloadCallback = function() {
+                grecaptcha.render('recaptcha_element', {
+                    'sitekey' : '<?= $this->getPreferences()->get('foolframe.auth.recaptcha2_sitekey') ?>'
+                });
+            };
         </script>
-        <noscript>
-            <iframe src="//www.google.com/recaptcha/api/noscript?k=<?= $this->getPreferences()->get('foolframe.auth.recaptcha_public') ?>"
-                    height="300" width="500" frameborder="0"></iframe><br>
-            <textarea name="recaptcha_challenge_field" rows="3" cols="40">
-            </textarea>
-            <input type="hidden" name="recaptcha_response_field"
-                   value="manual_challenge">
-        </noscript>
-
-        <?php endif; ?>
+        <div id="recaptcha_element"></div><hr>
+    <?php endif; ?>
 
         <?= $form->submit(['class' => 'btn btn-primary', 'name' => 'register', 'value' => _i('Register')]) ?>
 

@@ -338,23 +338,23 @@ class Preferences extends Admin
 
         $form['paragraph'] = array(
             'type' => 'paragraph',
-            'help' => _i('In order to use reCAPTCHA&trade; you need to sign up for the service at <a href="http://www.google.com/recaptcha">reCAPTCHA&trade;</a>, which will provide you with a public and a private key.')
+            'help' => _i('In order to use reCAPTCHA2&trade; you need to sign up for the service at <a href="http://www.google.com/recaptcha">reCAPTCHA2&trade;</a>, which will provide you with a site and a secret key.')
         );
 
-        $form['foolframe.auth.recaptcha_public'] = array(
+        $form['foolframe.auth.recaptcha2_sitekey'] = array(
             'type' => 'input',
-            'label' => _i('reCaptcha&trade; Public Key'),
+            'label' => _i('reCaptcha2&trade; Site Key'),
             'preferences' => true,
-            'help' => _i('Insert the public key provided by reCAPTCHA&trade;.'),
+            'help' => _i('Insert the Site key provided by reCAPTCHA2&trade;.'),
             'validation' => [new Trim()],
             'class' => 'span4'
         );
 
-        $form['foolframe.auth.recaptcha_private'] = array(
+        $form['foolframe.auth.recaptcha2_secret'] = array(
             'type' => 'input',
-            'label' => _i('reCaptcha&trade; Prvate Key'),
+            'label' => _i('reCaptcha2&trade; Secret Key'),
             'preferences' => true,
-            'help' => _i('Insert the private key provided by reCAPTCHA&trade;.'),
+            'help' => _i('Insert the Secret key provided by reCAPTCHA2&trade;.'),
             'validation' => [new Trim()],
             'class' => 'span4'
         );
