@@ -46,6 +46,9 @@ class DoctrineConnection extends Model
 
         if ($db_data['driver'] == 'pdo_mysql') {
             $data['charset'] = $db_data['charset'];
+            if (array_key_exists('driverOptions', $db_data)) {
+                $data['driverOptions'] = $db_data['driverOptions'];
+            }
         }
 
         $this->prefix = $db_data['prefix'];

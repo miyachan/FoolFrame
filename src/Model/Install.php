@@ -61,6 +61,9 @@ class Install extends Model
             'password' => $array['password'],
             'prefix' => $array['prefix'],
             'charset' => 'utf8mb4',
+            'driverOptions' => array (
+                1002 => 'SET @@sql_mode = sys.list_drop(@@sql_mode, \'ONLY_FULL_GROUP_BY\');',
+            )
         ));
 
         $this->config->save('foolz/foolframe', 'db');
