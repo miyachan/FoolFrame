@@ -64,7 +64,8 @@ class ExceptionHandler extends \Symfony\Component\Debug\ExceptionHandler
                     $string .= 'in '. $trace['class'].$trace['type'];
                 }
                 if (isset($trace['function'])) {
-                    $string .= $trace['function'].'('.$this->stringify($trace['args']).')';
+                    $args = isset($trace['args']) ? $this->stringify($trace['args']) : '';
+                    $string .= $trace['function'].'('.$args.')';
                 }
                 $string .= "\r\n";
             }
