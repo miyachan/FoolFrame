@@ -265,10 +265,13 @@ class Preferences extends Admin
             'class' => 'span5'
         );
 
-        $form['foolframe.ads_top_banner_active'] = array(
-            'type' => 'checkbox',
+        $form['foolframe.ads_top_banner_l2'] = array(
+            'type' => 'textarea',
+            'label' => _i('Top banner (Level 2)'),
+            'help' => _i('Insert the HTML code provided by your advertiser.'),
             'preferences' => true,
-            'help' => _i('Enable top banner')
+            'validation' => [new Trim()],
+            'class' => 'span5'
         );
 
         $form['foolframe.ads_bottom_banner'] = array(
@@ -280,10 +283,103 @@ class Preferences extends Admin
             'class' => 'span5'
         );
 
-        $form['foolframe.ads_bottom_banner_active'] = array(
-            'type' => 'checkbox',
+        $form['foolframe.ads_board_1'] = array(
+            'type' => 'textarea',
+            'label' => _i('Board Ad 1'),
+            'help' => _i('Insert the HTML code provided by your advertiser.'),
             'preferences' => true,
-            'help' => _i('Enable bottom banner')
+            'validation' => [new Trim()],
+            'class' => 'span5'
+        );
+
+        $form['foolframe.ads_board_2'] = array(
+            'type' => 'textarea',
+            'label' => _i('Board Ad 2'),
+            'help' => _i('Insert the HTML code provided by your advertiser.'),
+            'preferences' => true,
+            'validation' => [new Trim()],
+            'class' => 'span5'
+        );
+
+        $form['foolframe.ads_thread_1'] = array(
+            'type' => 'textarea',
+            'label' => _i('Thread Ad 1'),
+            'help' => _i('Insert the HTML code provided by your advertiser.'),
+            'preferences' => true,
+            'validation' => [new Trim()],
+            'class' => 'span5'
+        );
+
+        $form['foolframe.ads_thread_2'] = array(
+            'type' => 'textarea',
+            'label' => _i('Thread Ad 2'),
+            'help' => _i('Insert the HTML code provided by your advertiser.'),
+            'preferences' => true,
+            'validation' => [new Trim()],
+            'class' => 'span5'
+        );
+
+        $form['foolframe.ads_thread_3'] = array(
+            'type' => 'textarea',
+            'label' => _i('Thread Ad 3'),
+            'help' => _i('Insert the HTML code provided by your advertiser.'),
+            'preferences' => true,
+            'validation' => [new Trim()],
+            'class' => 'span5'
+        );
+
+        $form['foolframe.ads_thread_4'] = array(
+            'type' => 'textarea',
+            'label' => _i('Thread Ad 4'),
+            'help' => _i('Insert the HTML code provided by your advertiser.'),
+            'preferences' => true,
+            'validation' => [new Trim()],
+            'class' => 'span5'
+        );
+
+        $form['foolframe.ads_thread_5'] = array(
+            'type' => 'textarea',
+            'label' => _i('Thread Ad 5'),
+            'help' => _i('Insert the HTML code provided by your advertiser.'),
+            'preferences' => true,
+            'validation' => [new Trim()],
+            'class' => 'span5'
+        );
+
+        $form['foolframe.ads_gallery_1'] = array(
+            'type' => 'textarea',
+            'label' => _i('Gallery Ad 1'),
+            'help' => _i('Insert the HTML code provided by your advertiser.'),
+            'preferences' => true,
+            'validation' => [new Trim()],
+            'class' => 'span5'
+        );
+
+        $form['foolframe.ads_gallery_2'] = array(
+            'type' => 'textarea',
+            'label' => _i('Gallery Ad 2'),
+            'help' => _i('Insert the HTML code provided by your advertiser.'),
+            'preferences' => true,
+            'validation' => [new Trim()],
+            'class' => 'span5'
+        );
+
+        $form['foolframe.ads_gallery_3'] = array(
+            'type' => 'textarea',
+            'label' => _i('Gallery Ad 3'),
+            'help' => _i('Insert the HTML code provided by your advertiser.'),
+            'preferences' => true,
+            'validation' => [new Trim()],
+            'class' => 'span5'
+        );
+
+        $form['foolframe.ads_search_1'] = array(
+            'type' => 'textarea',
+            'label' => _i('Search Ad 1'),
+            'help' => _i('Insert the HTML code provided by your advertiser.'),
+            'preferences' => true,
+            'validation' => [new Trim()],
+            'class' => 'span5'
         );
 
         $form['separator'] = array(
